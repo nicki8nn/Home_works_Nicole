@@ -9,3 +9,5 @@ def get_days_from_today(date):
     return (given_date.date() - today).days
 result = get_days_from_today(date_string)
 print (result)
+
+
