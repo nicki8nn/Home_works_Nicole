@@ -9,13 +9,8 @@ raw_numbers = [
 normalized_numbers = []
 
 for phone_number in raw_numbers:
-    cleaned = phone_number.strip()
-    cleaned = cleaned.replace(" ", "").replace("-", "").replace("(", "").replace(")", "")
-
-    digits = ""
-    for char in cleaned:
-        if char.isdigit():
-            digits += char
+    
+    digits = "". joint(char for char in phone_number if char.isdigit())
 
     if digits.startswith("380"):
         normalized = "+" + digits
