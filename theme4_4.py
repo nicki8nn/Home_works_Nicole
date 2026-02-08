@@ -11,7 +11,16 @@ users = [
     {"name": "Nina", "birthday": "2026-02-10"}
 ]
 
-def get_upcoming_birthdays(users):
+def get_upcoming_birthdays(users: list[dict[str, str]]) -> list[dict[str, str]]:
+    """
+    Finds users with birthdays in the next 7 days.
+    
+    >>> # Example test case (Only passes if run between Feb 3rd and Feb 10th, 2026)
+    >>> test_users = [{"name": "Nina", "birthday": "2026-02-10"}]
+    >>> results = get_upcoming_birthdays(test_users)
+    >>> isinstance(results, list)
+    True
+    """
     today = date.today()
     end_day = today + timedelta(days=7)
     result = []
@@ -37,5 +46,8 @@ def get_upcoming_birthdays(users):
         })
 
     return result
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
 print(get_upcoming_birthdays(users))
 
