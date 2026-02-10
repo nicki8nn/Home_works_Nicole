@@ -10,7 +10,7 @@ normalized_numbers = []
 
 for phone_number in raw_numbers:
     
-    digits = "". joint(char for char in phone_number if char.isdigit())
+    digits = "".join(char for char in phone_number if char.isdigit())
 
     if digits.startswith("380"):
         normalized = "+" + digits

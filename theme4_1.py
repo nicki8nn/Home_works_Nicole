@@ -1,28 +1,41 @@
-import datetime
-
-today = datetime.datetime.today()
-date_string = "2020-10-09"
 from datetime import datetime
 
 def get_days_from_today(date: str) -> int:
     """
-    Calculates the number of days between a given date string and today.
+    Розраховує кількість днів між заданою датою (РРРР-ММ-ДД) і поточною датою.
     
-    Example:
-    >>> # Note: This test's success depends on the current date.
-    >>> # If today was 2020-10-10, the result below would be -1.
-    >>> isinstance(get_days_from_today("2020-10-09"), int)
-    True
+    :param date: Рядок з датою у форматі 'YYYY-MM-DD'
+    :return: Ціле число (різниця у днях)
     """
-    given_date = datetime.strptime(date, "%Y-%m-%d")
-    today = datetime.today().date()
-    return (given_date.date() - today).days
+    try:
+        # 1. Перетворюємо рядок у об'єкт datetime
+        # Якщо формат неправильний, тут виникне ValueError
+        given_date = datetime.strptime(date, "%Y-%m-%d").date()
+        
+        # 2. Отримуємо поточну дату (без годин та хвилин)
+        today = datetime.today().date()
+        
+        # 3. Розраховуємо різницю. 
+        # Згідно з умовою: якщо задана дата у майбутньому — результат від'ємний.
+        # Тому віднімаємо від 'сьогодні' 'задану дату'.
+        delta = today - given_date # Тут створюється об'єкт timedelta
+        
+        # 4. Повертаємо кількість днів як ціле число
+        return delta.days 
+    
+    except ValueError:
+        # Обробка випадку, коли рядок має неправильний формат
+        print(f"Помилка: Рядок '{date}' не відповідає формату РРРР-ММ-ДД.")
+        return None
+    except TypeError:
+        # Обробка випадку, коли передано не рядок
+        print("Помилка: Вхідні дані мають бути рядком.")
+        return None
+
 
 if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
-
-result = get_days_from_today(date_string)
-print (result)
+    print(get_days_from_today("2020-10-09"))  # Минуле: поверне додатне число
+    print(get_days_from_today("2027-01-01"))  # Майбутнє: поверне від'ємне число
+    print(get_days_from_today("не-дата"))      # Помилка: виведе повідомлення і поверне None
 
 

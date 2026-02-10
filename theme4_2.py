@@ -1,30 +1,41 @@
 import random
 
-def get_numbers_ticket(min: int, max: int, quantity: int) ->list[int]:
+def get_numbers_ticket(min_val: int, max_val: int, quantity: int) -> list[int]:
     """
     Генерує відсортований список унікальних випадкових чисел у заданому діапазоні.
-
-    >>> isinstance(get_numbers_ticket(1, 49, 6), list)
-    True
-    >>> len(get_numbers_ticket(1, 49, 6))
-    6
-    >>> get_numbers_ticket(1, 10, 11)
-    []
-    >>> get_numbers_ticket(0, 100, 5)
-    []
+    
+    Параметри:
+    - min_val: мінімальне число (>= 1)
+    - max_val: максимальне число (<= 1000)
+    - quantity: кількість чисел для вибору
     """
-    if min < 1 or max > 1000:
+    
+    # 1. Перевірка базових обмежень за умовою завдання
+    if min_val < 1 or max_val > 1000:
         return []
-    if quantity > (max - min + 1):
+    
+    # 2. Чи min не більше max
+    if min_val > max_val:
         return []
-    numbers = set()
-    while len(numbers) < quantity:
-        number = random.randint(min, max)
-        numbers.add(number)
-    return sorted(numbers)
+    
+    # 3. Перевірка: чи кількість запитуваних чисел не перевищує розмір діапазону
+    # quantity має бути позитивним числом
+    if quantity <= 0 or quantity > (max_val - min_val + 1):
+        return []
+
+    try:
+        # random.sample для генерації унікальних чисел.
+        numbers = random.sample(range(min_val, max_val + 1), quantity)
+        return sorted(numbers)
+    except (ValueError, TypeError):
+        # на випадок некоректних типів даних
+        return []
+
 
 if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
-
-print(get_numbers_ticket(1,36,5))
+    lottery_numbers = get_numbers_ticket(1, 49, 6)
+    print(f"Ваші лотерейні числа: {lottery_numbers}")
+    
+    # Перевірка помилкових даних
+    print(f"Помилка (min > max): {get_numbers_ticket(50, 10, 5)}")
+    print(f"Помилка (некоректна кількість): {get_numbers_ticket(1, 36, 40)}")
